@@ -18,7 +18,7 @@ function lcm(a, b) {
 }
 
 // Replace this with your email (underscores only)
-app.get("/fozyelibnayez@gmail_com", (req, res) => {
+app.get("/ibnayaz789_gmail_com", (req, res) => {
   const x = Number(req.query.x);
   const y = Number(req.query.y);
 
