@@ -2,9 +2,9 @@ const express = require("express");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// GCD using Euclidean algorithm
+// GCD for BigInt
 function gcd(a, b) {
-  while (b !== 0) {
+  while (b !== 0n) {
     const temp = b;
     b = a % b;
     a = temp;
@@ -12,28 +12,26 @@ function gcd(a, b) {
   return a;
 }
 
-// LCM calculation
-function lcm(a, b) {
-  return (a * b) / gcd(a, b);
-}
+app.get(/^\/ibnayaz789_gmail_com\/?$/, (req, res) => {
+  res.set("Content-Type", "text/plain");
 
-// Replace this with your email (underscores only)
-app.get("/ibnayaz789_gmail_com", (req, res) => {
-  const x = Number(req.query.x);
-  const y = Number(req.query.y);
+  try {
+    const x = BigInt(req.query.x);
+    const y = BigInt(req.query.y);
 
-  // Check for natural numbers
-  if (
-    !Number.isInteger(x) ||
-    !Number.isInteger(y) ||
-    x <= 0 ||
-    y <= 0
-  ) {
+    // natural numbers only
+    if (x <= 0n || y <= 0n) {
+      return res.send("NaN");
+    }
+
+    const result = (x * y) / gcd(x, y);
+
+    // BigInt → string (digits only)
+    res.send(result.toString());
+  } catch (e) {
+    // covers missing params, floats, non-numbers
     res.send("NaN");
-    return;
   }
-
-  res.send(String(lcm(x, y)));
 });
 
 app.listen(PORT, () => {
